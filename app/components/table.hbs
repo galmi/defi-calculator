@@ -1,0 +1,35 @@
+<table class="table">
+  <thead>
+  <tr>
+    <th scope="col">Date</th>
+    <th>TVL, $</th>
+    <th>LP Price, $</th>
+    <th>APY, %</th>
+    <th>Daily<br>Interest, %</th>
+    <th>Invested, $</th>
+    <th>Total LP</th>
+    <th>Total LP, $</th>
+    <th>ROI</th>
+    <th>Min Token Price<br>for Breakeven</th>
+  </tr>
+  </thead>
+  <tbody>
+  {{#each-in this.table as |ts item|}}
+    <tr>
+      <td scope="row">{{substr ts 0 10}}</td>
+      <td>{{item.tvl}}</td>
+      <td class="{{if item.price_warning 'text-white bg-danger' ''}}">{{fixed item.price 4}}</td>
+      <td>{{perc item.apy 2}}</td>
+      <td>{{perc item.daily_apr 4}}</td>
+      <td><Input
+        @value={{item.invested}}
+        {{on "keyup" (action this.invest ts)}}
+      /></td>
+      <td>{{fixed item.lp_quantity 8}}</td>
+      <td>{{fixed item.lp_quantity_usd 2}}</td>
+      <td class="{{if item.roi (if (gt item.roi 0) 'text-white bg-success' 'text-white bg-danger') ''}}">{{perc item.roi 2}}</td>
+      <td>{{fixed item.price_breakeven 4}}</td>
+    </tr>
+  {{/each-in}}
+  </tbody>
+</table>

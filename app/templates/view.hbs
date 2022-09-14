@@ -1,0 +1,7 @@
+{{page-title "View"}}
+
+<h2>{{join @model.data.assets "-"}}</h2>
+<p><b>Chain:</b> {{ucfirst @model.data.chain}}<br><b>Platform:</b> {{ucfirst @model.data.platform}}</p>
+<Table @table={{@model.table}} />
+
+{{outlet}}

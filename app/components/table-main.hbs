@@ -1,0 +1,47 @@
+{{did-insert this.registerListener}}
+{{will-destroy this.unregisterListener}}
+
+<form class="w-100 me-3" role="filter">
+  <BsButtonGroup
+    class="w-100 me-3"
+    @value={{this.chains}}
+    @type="checkbox"
+    @onChange={{fn (mut this.chains)}} as |bg|
+  >
+    {{#each-in this.model.chains as |id chain|}}
+      <bg.button @value="{{chain}}">{{ucfirst chain}}</bg.button>
+    {{/each-in}}
+  </BsButtonGroup>
+</form>
+<table class="table table-bordered table-striped">
+  <thead>
+  <tr>
+    <th scope="col">
+      <form class="w-100 me-3" role="search">
+        <Input @value={{this.filter}} type="search" class="form-control" aria-label="Search" placeholder="Search..."/>
+      </form>
+    </th>
+    <th><a onclick={{action 'sort' 'totalApy'}}>APY
+      <FaIcon @icon="{{this.sort_totalApy}}"/>
+    </a></th>
+    <th><a onclick={{action 'sort' 'totalDaily'}}>Daily
+      <FaIcon @icon="{{this.sort_totalDaily}}"/>
+    </a></th>
+    <th><a onclick={{action 'sort' 'totalTVL'}}>TVL
+      <FaIcon @icon="{{this.sort_totalTVL}}"/>
+    </a></th>
+  </tr>
+  </thead>
+  <tbody>
+  {{#each-in this.model.data as |id lp|}}
+    <tr>
+      <td scope="row">
+        <LinkTo @route="view" @model={{lp.id}}>{{#each lp.assets as |token|}}{{token}} {{/each}} - {{lp.chain}}</LinkTo>
+      </td>
+      <td>{{perc lp.totalApy 2 1}}</td>
+      <td>{{perc lp.totalDaily 4}}</td>
+      <td>{{format lp.totalTVL 0 1}}</td>
+    </tr>
+  {{/each-in}}
+  </tbody>
+</table>

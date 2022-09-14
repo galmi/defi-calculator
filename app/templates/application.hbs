@@ -1,7 +1,10 @@
-{{page-title "Frontend"}}
+{{page-title "Beefy profit calculator"}}
 
-{{!-- The following component displays Ember's default welcome message. --}}
-<WelcomePage />
-{{!-- Feel free to remove this! --}}
-
-{{outlet}}
+<header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+  <LinkTo @route="index" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+    <span class="fs-4">Beefy profit calculator</span>
+  </LinkTo>
+</header>
+<div class="container-fluid pb-3">
+  {{outlet}}
+</div>
