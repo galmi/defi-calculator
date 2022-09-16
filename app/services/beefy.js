@@ -36,7 +36,6 @@ export default class BeefyService extends Service {
             };
           }
         }
-        console.log(response.data);
         this.cache.set('beefy_vaults', this.data, 60 * 60);
         return this.data;
       });
