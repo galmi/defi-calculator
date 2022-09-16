@@ -36,6 +36,7 @@ export default class BeefyService extends Service {
             };
           }
         }
+        console.log(response.data);
         this.cache.set('beefy_vaults', this.data, 60 * 60);
         return this.data;
       });
@@ -101,7 +102,7 @@ export default class BeefyService extends Service {
       this.data[key].totalTVL =
         this.data[key].price * this.data[key].totalSupply;
     }
-
+    console.log(this.data);
     return Object.values(this.data);
   }
 

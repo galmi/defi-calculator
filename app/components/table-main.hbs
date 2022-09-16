@@ -1,17 +1,16 @@
 {{did-insert this.registerListener}}
 {{will-destroy this.unregisterListener}}
 
-<form class="w-100 me-3" role="filter">
+<form class="w-100 me-3 mb-3" role="filter" style="display:flex;row-gap:16px;column-gap:16px;flex-direction:row">
+  {{#each-in this.model.chains as |id chain|}}
   <BsButtonGroup
-    class="w-100 me-3"
     @value={{this.chains}}
     @type="checkbox"
     @onChange={{fn (mut this.chains)}} as |bg|
   >
-    {{#each-in this.model.chains as |id chain|}}
-      <bg.button @value="{{chain}}">{{ucfirst chain}}</bg.button>
-    {{/each-in}}
+      <bg.button @value="{{chain}}" @outline="outline" data-mdb-color="dark" @title="{{ucfirst chain}}">{{inline-svg (concat "assets/images/" chain ".svg")}}</bg.button>
   </BsButtonGroup>
+  {{/each-in}}
 </form>
 <table class="table table-bordered table-striped">
   <thead>
@@ -36,7 +35,12 @@
   {{#each-in this.model.data as |id lp|}}
     <tr>
       <td scope="row">
-        <LinkTo @route="view" @model={{lp.id}}>{{#each lp.assets as |token|}}{{token}} {{/each}} - {{lp.chain}}</LinkTo>
+        {{#if lp.chain}}
+        <div style="width: 28px;height: 28px;display: inline-block;vertical-align: top;">{{inline-svg (concat "assets/images/" lp.chain ".svg")}}</div>
+        {{/if}}
+        <div style="display: inline-block">
+        <LinkTo @route="view" @model={{lp.id}}>{{#each lp.assets as |token|}}{{token}} {{/each}}</LinkTo><br>{{ucfirst lp.platform}}
+        </div>
       </td>
       <td>{{perc lp.totalApy 2 1}}</td>
       <td>{{perc lp.totalDaily 4}}</td>
