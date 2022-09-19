@@ -5,5 +5,5 @@ export default helper(function fixed(args /*, named*/) {
   if (num === '' || num === undefined || isNaN(num) || num == 0.0) {
     return '';
   }
-  return num.toFixed(frac);
+  return parseFloat(num.toFixed(frac));
 });

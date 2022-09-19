@@ -4,6 +4,7 @@ import RSVP from 'rsvp';
 
 export default class ViewRoute extends Route {
   @service beefy;
+  @service quotes;
 
   table = {};
 
@@ -48,6 +49,8 @@ export default class ViewRoute extends Route {
     return RSVP.hash({
       data: data,
       table: this.table,
+      quotes: this.quotes.quotes(),
+      quote: 'USDT',
     });
   }
 }

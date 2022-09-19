@@ -1,25 +1,38 @@
 import Component from '@glimmer/component';
 import { action } from '@ember/object';
-import { set } from '@ember/object';
+import { get, set } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
+import { service } from '@ember/service';
+import { addObserver, removeObserver } from '@ember/object/observers';
 
 export default class TableComponent extends Component {
+  @service quotes;
   @tracked table;
+  @tracked params;
 
   constructor() {
     super(...arguments);
     this.table = this.args.table;
-    // console.log("table arg", this.args.table);
+    this.params = this.args;
+  }
+
+  @action registerListener() {
+    addObserver(this, 'params.quote', this, 'invest');
+  }
+
+  @action unregisterListener(element) {
+    removeObserver(this, 'params.quote', this, 'invest');
   }
 
   @action
-  invest(ts) {
+  invest() {
     var totalInvested = 0.0;
     var lpQuantity = 0.0;
     var lastPriceBreakeven = 0.0;
     for (var tskey in this.table) {
       let row = this.table[tskey];
-      if (row.price <= lastPriceBreakeven) {
+      let price = this.quotes.convert(row.price, this.params.quote, tskey);
+      if (price <= lastPriceBreakeven) {
         set(row, 'price_warning', true);
       } else {
         set(row, 'price_warning', false);
@@ -28,19 +41,19 @@ export default class TableComponent extends Component {
       const invested = parseFloat(row.invested);
       if (!isNaN(invested)) {
         totalInvested += invested;
-        lpQuantity += invested / row.price;
+        lpQuantity += invested / price;
       }
       // const dailyApr = Math.pow(1 + row.apy, 1 / 365) - 1;
       const dailyProfit = lpQuantity * row.daily_apr;
       lpQuantity += dailyProfit;
-      const lpQuantityUsd = lpQuantity * row.price;
+      const lpQuantityUsd = lpQuantity * price;
       var roi = 0.0;
       var drawdownBreakeven = 0.0;
       var priceBreakeven = 0.0;
       if (totalInvested > 0) {
         roi = lpQuantityUsd / totalInvested - 1;
         drawdownBreakeven = (lpQuantityUsd - totalInvested) / lpQuantityUsd;
-        priceBreakeven = row.price * (1 - drawdownBreakeven);
+        priceBreakeven = price * (1 - drawdownBreakeven);
         if (drawdownBreakeven <= 0) {
           drawdownBreakeven = '';
           priceBreakeven = '';

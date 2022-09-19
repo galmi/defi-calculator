@@ -5,6 +5,7 @@ import RSVP from 'rsvp';
 
 export default class IndexRoute extends Route {
   @service beefy;
+  @service quotes;
   async model() {
     return RSVP.hash({
       data: this.beefy.all(),

@@ -1,7 +1,21 @@
 {{page-title "View"}}
 
 <h2>{{join @model.data.assets "-"}}</h2>
-<p><b>Chain:</b> {{ucfirst @model.data.chain}}<br><b>Platform:</b> {{ucfirst @model.data.platform}}</p>
-<Table @table={{@model.table}} />
+<p><b>Chain:</b> {{ucfirst @model.data.chain}}<br>
+  <b>Platform:</b> {{ucfirst @model.data.platform}}<br>
+  <b>Calculate by quote:</b> {{@model.quote}}</p>
+<form class="w-100 me-3 mb-3" role="filter" style="display:flex;row-gap:16px;column-gap:16px;flex-direction:row">
+  {{#each-in @model.quotes as |id coin|}}
+    <BsButtonGroup
+      @value={{@model.quote}}
+      @type="radio"
+      @onChange={{fn (mut @model.quote)}} as |bg|
+    >
+      <bg.button @value="{{coin}}" @outline="outline" data-mdb-color="dark"
+                 @title="{{ucfirst coin}}">{{coin}}</bg.button>
+    </BsButtonGroup>
+  {{/each-in}}
+</form>
+<Table @table={{@model.table}} @quote={{@model.quote}} />
 
 {{outlet}}
