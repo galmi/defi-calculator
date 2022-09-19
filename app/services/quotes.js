@@ -37,7 +37,6 @@ export default class BeefyService extends Service {
               `https://api.binance.com/api/v3/klines?symbol=${pairId}&interval=1d&startTime=${from}&endTime=${to}`
             )
             .then((response) => {
-              console.log(pairId, response);
               const key = 'quotes_' + pairId;
               var data = {};
               for (var kline of response.data) {
@@ -52,7 +51,6 @@ export default class BeefyService extends Service {
     }
     await Promise.all(promises);
     this.loading = false;
-    console.log('Quotes', pairId, this.quotePrice);
   }
 
   getValue(base, day) {
@@ -62,12 +60,10 @@ export default class BeefyService extends Service {
     var [year, month, d] = day.split('-');
     var dayDate = Date.UTC(year, month - 1, d, 0, 0, 0, 0);
     const value = get(this.quotePrice, `${base}.${dayDate}`);
-    console.log(this.quotePrice, `${base}.${dayDate}`, value);
     return value;
   }
 
   convert(valueUsd, quote, day) {
-    // console.log(valueUsd, quote, day, Date.parse(day), this.getValue(quote, day));
     return parseFloat((valueUsd / this.getValue(quote, day)).toFixed(8));
   }
 }
