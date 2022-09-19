@@ -9,16 +9,17 @@ export default class TableMainComponent extends Component {
   @tracked model;
   @tracked filter = '';
   @tracked chains = [];
-  @tracked sortKey = '';
-  @tracked sortDirection = '';
+  @tracked sortKey = 'totalDaily';
+  @tracked sortDirection = 'desc';
   @tracked sort_totalApy = 'sort';
-  @tracked sort_totalDaily = 'sort';
+  @tracked sort_totalDaily = 'sort-down';
   @tracked sort_totalTVL = 'sort';
 
   constructor() {
     super(...arguments);
     this.model = this.args.model;
     this.originalModel = structuredClone(this.args.model);
+    this.sortModel();
   }
 
   @action
@@ -34,9 +35,6 @@ export default class TableMainComponent extends Component {
       if (this.sortDirection === 'asc') {
         this.sortDirection = 'desc';
         this['sort_' + key] = 'sort-down';
-        // } else if (this.sortDirection === 'desc') {
-        //   this.sortDirection = '';
-        //   this['sort_' + key] = 'sort';
       } else {
         this.sortDirection = 'asc';
         this['sort_' + key] = 'sort-up';
@@ -92,7 +90,6 @@ export default class TableMainComponent extends Component {
       ) {
         continue;
       }
-      // console.log(id, this.originalModel.data);
       var assets = item.assets.join(' ');
       if (
         assets.length > 0 &&
