@@ -4,7 +4,7 @@ module.exports = function (environment) {
   let ENV = {
     modulePrefix: 'frontend',
     environment,
-    rootURL: '/defi-calculator/',
+    rootURL: '/',
     locationType: 'hash',
     EmberENV: {
       FEATURES: {
