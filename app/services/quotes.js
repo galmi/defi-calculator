@@ -34,7 +34,7 @@ export default class BeefyService extends Service {
         ((quote, pairId) => {
           return axios
             .get(
-              `https://api.binance.com/api/v3/klines?symbol=${pairId}&interval=1d&startTime=${from}&endTime=${to}`
+              `https://api.binance.com/api/v3/klines?symbol=${pairId}&interval=1d&startTime=${from}` //&endTime=${to}`
             )
             .then((response) => {
               const key = 'quotes_' + pairId;
